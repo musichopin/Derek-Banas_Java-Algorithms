@@ -8,6 +8,7 @@
 // 1. Allow only a single item to be added or removed at a time
 // 2. Stacks allow access to the last item inserted (LIFO)
 // 3. Queues allow access to the first item inserted (FIFO)
+// **they both insert values in a row from left to right but allow access differently**
 
 import java.util.Arrays;
 
@@ -18,7 +19,11 @@ public class TheStack {
 	
 	// Sets stack as empty
 //	rear/back of the array
-	private int topOfStack = -1;
+	private int topOfStack = -1; // *indeks olarak kullanýlýr*
+//	***-1 olmasýnýn sebebi push metodunda yeni item ekleneceði 
+//	zaman topofstack'in son eklenen itemýn indeksini almasý.
+//	thequeue'deki front, numberOfItems, rear variablelarýna karþýlýk
+//	thestack'de topofstack isimli son index simgesi var***
 	
 //	constructor
 	TheStack(int size){
@@ -29,9 +34,10 @@ public class TheStack {
 		
 		// Assigns the value of -1 to every value in the array
 		// so I control what gets printed to screen.
-//		topOfStack'in de -1 olmasý ile bir ilintisi yok
+// ***10 elemanlý array yaratýlýrken indekslere deðer verilmese 
+//		bile null deðerini alýrlar ve hafýzada yer kaplarlar***
 		Arrays.fill(stackArray, "-1");
-		
+//		topOfStack'in de -1 olmasý ile bir ilintisi yok		
 	}
 
 // if we wanna put an item onto the stack
@@ -42,22 +48,31 @@ public class TheStack {
 // 	we have enough room inside of our array
 		if(topOfStack+1 < stackSize){
 			
-			topOfStack++;
+			topOfStack++; // **alt: stackArray[++topOfStack] = input;**
+//			***topOfStack'in önceden eklenmiþ olmasý önemli.
+//			ki bu nedenle topOfStack baþlangýçta -1 deðerindeydi***
 			
 //			we add whatever item is passed over
 //			into our array where our stack is
 			stackArray[topOfStack] = input;
 			
-		} else System.out.println("Sorry But the Stack is Full");
+			displayTheStack();
+			
+			System.out.println("PUSH " + input + " Was Added to the Stack\n");
+			
+		} else {
 		
-		displayTheStack();
+			displayTheStack();
+
+			System.out.println("Sorry But the Stack is Full");
 		
-		System.out.println("PUSH " + input + " Was Added to the Stack\n");
+		}
 		
 	}
 	
-//	***pop metodunun alternatif çözümü derek banas'da mevcut***
 //	we want to get info off of a stack and remove it
+//	***pop() removes from the end as opposed to 
+//	remove() in thequeue class***
 	public String pop(){
 		String old;
 //		an array starts at 0 index
@@ -66,17 +81,18 @@ public class TheStack {
 			old = stackArray[topOfStack];
 //			stores the removed value in memory
 			
-			// Just like in memory an item isn't deleted, but instead is just not available
+			// **Just like in memory an item isn't deleted, but instead is just not available**
 			stackArray[topOfStack] = "-1"; 
 			// Assigns -1 so the value won't appear next time it is displayed
-
-//			topOfStack 1 azalýr 
-//			ve bu topOfStack >= 0 þartýný saðlamak bakýmýndan önemlidir
-			topOfStack--;
-	
-		} else {
 			
 			displayTheStack();
+
+			System.out.println("POP " + old + " Was Removed From the Stack\n");
+
+			return stackArray[topOfStack--];
+//			**topOfStack 1 azalýr; syntaxe dikkat**
+			
+		} else {
 			
 			System.out.println("Sorry But the Stack is Empty");
 			
@@ -84,22 +100,21 @@ public class TheStack {
 			
 		}
 		
-		displayTheStack();
-		
-		System.out.println("POP " + old + " Was Removed From the Stack\n");
-		
-		return "";
-		
 	}
 	
 //	see what is at the top of the stack but don't remove it
 	public String peek(){
 		
-		displayTheStack();
+		if (topOfStack >= 0) {
+			displayTheStack();
+			
+			System.out.println("PEEK " + stackArray[topOfStack]  + " Is at the Top of the Stack\n");
+			
+			return stackArray[topOfStack];
+		}
 		
-		System.out.println("PEEK " + stackArray[topOfStack]  + " Is at the Top of the Stack\n");
-		
-		return stackArray[topOfStack];
+		System.out.println("No value to look for!");
+		return null;
 		
 	}
 	
@@ -119,6 +134,7 @@ public class TheStack {
 	public void popAll(){
 		
 		for(int i = topOfStack; i >= 0; i--){
+			// **"for(int i = 0; i < stackSize; i++)" olamaz**
 			
 			pop();
 			
@@ -130,6 +146,7 @@ public class TheStack {
 		
 		String theReverse = "";
 		
+//		*prints out the letters in reversed position*
 		for(int i = topOfStack; i >= 0; i--){
 			
 			theReverse += stackArray[i];
@@ -203,13 +220,10 @@ public class TheStack {
 		theStack.pushMany("R E D R U M");
 		
 		// Remove all from the stack
-		
 //		theStack.popAll();
 		
-		// Remove all from the stack and print them
-		
+		// reverse the word and call popAll method
 		theStack.popDisplayAll();
-//		popAll metodu üzerinden pop metodunu çaðýrýr
 		
 	}
 	

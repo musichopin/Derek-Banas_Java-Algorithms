@@ -119,7 +119,7 @@ public class ArrayStructures {
 	
 	// Linear Search : Every index must be looked at
 	
-	public String linearSearchForValue(int value){
+	public void linearSearchForValue(int value){
 		
 		boolean valueInArray = false;
 		
@@ -148,8 +148,6 @@ public class ArrayStructures {
 			
 		System.out.println(); // useless: printing a space
 		
-		return indexsWithValue; // useless
-			
 	}
 	
 	public static void main(String[] args){

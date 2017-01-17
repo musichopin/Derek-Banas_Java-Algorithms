@@ -22,9 +22,9 @@ public class JavaAlgorithms extends JFrame {
 	int cellToMark = -1;
 	
 	// Holds the array that goes in JTable
-	
+//	***md array ile polymorphism yapýlmýþ gibi düþünülebilir***
 	Object[][] data = {
-		    {new Integer(0), new Integer(0), ""},
+		    {new Integer(0), new Integer(0), ""}, // alt: {0, 0, ""}
 		    {new Integer(1), new Integer(0), ""},
 		    {new Integer(2), new Integer(0), ""},
 		    {new Integer(3), new Integer(0), ""},
@@ -34,7 +34,7 @@ public class JavaAlgorithms extends JFrame {
 		    {new Integer(7), new Integer(0), ""},
 		    {new Integer(8), new Integer(0), ""},
 		    {new Integer(9), new Integer(0), ""},
-		}; 
+		};
 	
 	String[] columnNames = {"Index",
             "Value",
@@ -42,16 +42,17 @@ public class JavaAlgorithms extends JFrame {
 	
 	
 	DefaultTableModel dTableModel = new DefaultTableModel(data, columnNames);
+//	**DefaultTableModel, jTable'a yerleþecek**
 
 	/**
 	 * Create the frame.
 	 */
 	public JavaAlgorithms() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 970, 800);
+		setBounds(100, 100, 970, 800); // sets initial position of panel
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); // subtle change
+		setContentPane(contentPane); // for panel to display
 		
 		JLabel valueLabel = new JLabel("Value");
 		valueLabel.setFont(new Font("Dialog", Font.BOLD, 30));
@@ -111,7 +112,7 @@ public class JavaAlgorithms extends JFrame {
 		JTextArea textArea = new JTextArea("Output");
 		textArea.setFont(new Font("Dialog", Font.PLAIN, 30));
 		
-		// ------------------------
+		// ------------------------ *SKIP LAYOUT SECTION*
 		
 		GroupLayout groupLayout = new GroupLayout(contentPane);
 		
@@ -198,6 +199,7 @@ public class JavaAlgorithms extends JFrame {
 			
 			table.setRowHeight(table.getRowHeight()+30);
 			
+//			*adds table to the scrollpane*
 			scrollPane.setViewportView(table);
 		
 		
@@ -205,7 +207,10 @@ public class JavaAlgorithms extends JFrame {
 	}
 	
 	// Set up all the listeners
-	
+	// ***If the buttons are clicked execute a method
+	// in the Controller named actionPerformed
+	// for each specific inner classes.
+	//	(this statement prepares the event handling)***
 	void addInsertButtonListener(ActionListener listenerForInsertButton){
 		
 		insertButton.addActionListener(listenerForInsertButton);
@@ -230,42 +235,52 @@ public class JavaAlgorithms extends JFrame {
 		
 	}
 	
-	// Other Random Methods Needed
 	
+	// ***Other Random Methods Needed (yukarýdaki metodlar event ile iliþkili 
+//	ve controllerdaki event listenerlar ile iliþki kurmaya yarýyor. aþaðýdaki 
+//	metodlar ise event sonrasýnda ve/veya default olarak çaðýrýlan metodlar***
+	
+//	**triggered when event (clicking) is done and when either 
+//	error found or explanation wanted to be made**
 	void sendMessageToUser(String errorMessage){
 		
 		JOptionPane.showMessageDialog(this, errorMessage);
 		
 	}
 	
+//	**triggered when event (clicking) is done**
 	public int getTheValue(){
 		
 		return Integer.parseInt(arrayValueTextField.getText());
-		
+//		*value value'su return ediliyor*
 	}
 	
+//	**triggered when event (clicking) is done**
 	public int getTheIndex(){
 		
 		return Integer.parseInt(arrayIndexTextField.getText());
-		
+//		*index value'su return ediliyor*
 	}
 	
+//	***triggered before event and when event (clicking) is done as well***
 	public void updateTheTable(int[] newArray, int rows){
 		
-		Object[] tempRow;
+		Object[] tempRow; // **polymorphism**
 		
-		dTableModel.setRowCount(0); // Clear JTable
+		dTableModel.setRowCount(0); // *clear JTable rows firstly*
 		
 		for(int i = 0; i < rows; i++){
 			
+//			**if kýsmý etkisiz (?) else kýsmý önemli**
 			if(i == this.cellToMark)tempRow = new Object[]{i, newArray[i], "XXXXX"};
 			
 			else tempRow = new Object[]{i, newArray[i], ""};
 			
+//			***önceden yarattýðýmýz md array'in satýrlarýna single dimensional arrayler 1er 1er ekleniyor***
 			dTableModel.addRow(tempRow);
 			
 		}
-		
+
 	}
 	
 }
@@ -286,27 +301,28 @@ class AlgorithmsMVC{
 }
 
 class AlgorithmsController{
+	// **controller model (algoritma) ile view arasýnda aracýlýk yapar**
 	
 	private JavaAlgorithms theView;
 	private ArrayStructure theModel;
 	
+	// ***model set -> model get -> view set***
 	public AlgorithmsController(JavaAlgorithms theView, ArrayStructure theModel){
 		
 		this.theView = theView;
 		this.theModel = theModel;
 		
-		theModel.generateRandomArray();
+//		**model set -> model get -> view set**
+		theModel.generateRandomArray(); // automatic
+		// ***Put random array data in the table model (automatic)
+		//	modeldan aldýðýný viewe aktarýr ve bu iþlem event olmadan gerçekleþir***
+		theView.updateTheTable(theModel.getTheArray(), theModel.getArraySize());
 		
 		// Add button listeners
-		
 		this.theView.addInsertButtonListener(new InsertButtonListener());
 		this.theView.addDeleteButtonListener(new DeleteButtonListener());
 		this.theView.addFindButtonListener(new FindButtonListener());
 		this.theView.addSortButtonListener(new SortButtonListener());
-		
-		// Put random array data in the table model
-		
-		theView.updateTheTable(theModel.getTheArray(), theModel.getArraySize());
 		
 	}
 	
@@ -318,7 +334,7 @@ class AlgorithmsController{
 			
 			
 			try{
-				
+//				***view get -> model set -> model get -> view set***
 				theModel.insertValue(theView.getTheValue());
 				
 				// Take the array data from the model & move it to the JTable
@@ -337,14 +353,14 @@ class AlgorithmsController{
 		
 	}
 	
-	// ActionListener for the Insert Button
+	// ActionListener for the Delete Button
 	
 	class DeleteButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
 			
 			try{
-				
+//				***view get -> model set -> model get -> view set***
 				theModel.deleteIndex(theView.getTheIndex());
 				
 				theView.updateTheTable(theModel.getTheArray(), theModel.getArraySize());
@@ -370,10 +386,14 @@ class AlgorithmsController{
 			String indexWithValue = "";
 			
 			try{
-				
+//				***view get -> model set -> model get (odd style) -> view set***
 				if(theView.linearSearchRadioButton.isSelected()){
 					
 					indexWithValue = theModel.linearSearchForValue(theView.getTheValue());
+					
+				} else {
+					
+					indexWithValue = theModel.binarySearchForValue(theView.getTheValue());
 					
 				}
 				
@@ -399,6 +419,7 @@ class AlgorithmsController{
 			
 			try{
 				
+//				*** model set -> model get -> view set***
 				if(theView.ascendingRadioButton.isSelected()){
 					
 					theModel.bubbleSort();
