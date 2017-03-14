@@ -8,7 +8,8 @@
 // 1. Allow only a single item to be added or removed at a time
 // 2. Stacks allow access to the last item inserted (LIFO)
 // 3. Queues allow access to the first item inserted (FIFO)
-// **they both insert values in a row from left to right but allow access differently**
+// **they both insert values in a row from left to right (though from
+//different directions) but allow access differently**
 
 import java.util.Arrays;
 

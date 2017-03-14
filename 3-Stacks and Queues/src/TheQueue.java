@@ -10,7 +10,9 @@ public class TheQueue {
 
 //	we also monitor the front unlike the stack
 //	***rear, itemýn eklenmesinde front ise itemýn çýkarýlmasýnda 
-//	ve item search edilmede kullanýlýr***
+//	ve item search etmede kullanýlýr. (ancak thequeue'de item eklenirken de
+//	baþtaki indeks kullanýlabilir; önemli olan fark item eklenirken sondan baþa
+//	gidilirken item çýkarýlýrken baþtan sona gidilir)***
 	private int front, numberOfItems, rear = 0; // *otomatik olarak 0 zaten*
 // ***0 valuesunun kullanýlma nedeni 0. indeksi temsil amaçlý.
 //	thestack'deki topofstack variableýna karþýlýk thequeue'de
@@ -54,7 +56,7 @@ public class TheQueue {
 		
 	}
 	
-	// *This priority insert will add items in order from high to low*
+	// ***This priority insert will add items in order from high to low***
 	public void priorityInsert(String input){
 		
 		int i;
@@ -89,8 +91,8 @@ public class TheQueue {
 	//			**i'nin -1 olabileceði unutulmamalý**
 				queueArray[i+1] = input;
 				
-				rear++;
-	//			*insert metodunda da rear ve numberOfItems 1 artmýþtý*
+				rear++; // **etkisiz (?)**
+
 				numberOfItems++;
 				
 			} else {
@@ -112,14 +114,14 @@ public class TheQueue {
 			System.out.println("REMOVE " + queueArray[front] + " Was Removed From the Queue\n");
 //			***we are gonna be removing from the front (unlike stack)***
 			
-			// Just like in memory an item isn't deleted, but instead is just not available
+			// **Just like in memory an item isn't deleted, but instead is just not available**
 			queueArray[front] = "-1";
 			
 			front++;
 //			for future items to be removed from one further up
 		
 			numberOfItems--;
-		
+			
 		} else {
 			
 			System.out.println("Sorry But the Queue is Empty");

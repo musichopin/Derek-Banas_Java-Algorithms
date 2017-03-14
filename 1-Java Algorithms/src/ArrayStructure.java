@@ -182,7 +182,7 @@ public class ArrayStructure {
 	// smallest to largest
 	
 	public void bubbleSort(){
-//		***bubbleSortDescending'deki yöntemi algılaması daha kolay gibi.
+//		***bubbleSortDescending'deki yöntem alternatif (ama aynı kapıya çıkıyor).
 //		tek farklı yapılması gereken "if(theArray[j-1] > theArray[j])" demek***
 		
 		// i starts at the end of the Array

@@ -94,7 +94,7 @@ public class ArrayStructures {
 				
 				valueInArray = true;
 				
-				indexsWithValue+= i + " "; // useless
+				indexsWithValue+= i + " ";
 				
 			}
 			
@@ -291,9 +291,9 @@ public void printHorzArray(int i, int j){
 		public void insertionSort(){
 			
 			for (int i = 1; i < arraySize; i++){
-				  int j = i;
-				  int toInsert = theArray[i]; 
-				  // **toInsert sonradan kullanýlacak ve deðiþtiði için var a atanýyor**
+				  int j = i; //***i, j'ye atanmasa inner while loop'tan dolayý i modifiye olacaktý***
+				  int toInsert = theArray[i]; // ***toInsert'e assign edilmese, 
+				  // theArray[i] inner loop'tan dolayý her seferinde deðiþecekti***
 				  while ((j > 0) && (theArray[j-1] > toInsert)){
 					  // **toInsert yerine theArray[i] veya theArray[j] kullanýlamaz, 
 					  //   çünkü theArray manipule ediliyor**
@@ -304,7 +304,6 @@ public void printHorzArray(int i, int j){
 					  
 				  }
 				  theArray[j] = toInsert;
-//				  **0. indeksi son indekse eþitler**
 				  
 				  printHorzArray(i, j);
 				  
@@ -333,10 +332,10 @@ public void printHorzArray(int i, int j){
 		newArray.binarySearchForValue(17);
 		
 		System.out.println("\n\n\nselectionSort: ");
-		newArray.selectionSort();
+		newArray.selectionSort(); // new
 		
 		System.out.println("\n\n\ninsertionSort: ");
-		newArray.insertionSort();
+		newArray.insertionSort(); // new
 		
 	}
 
